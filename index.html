@@ -182,7 +182,8 @@
   <p class="sub" style="margin-bottom:0">Here's what you chose — I'll take care of the rest.</p>
   <div class="summary" id="summary"></div>
   <div class="names">Nikusha <span>&amp;</span> Mia</div>
-  <div class="send">
+  <p class="note" id="status" style="margin-top:22px"></p>
+  <div class="send" style="margin-top:14px">
     <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener" style="text-decoration:none">Send to Nikusha</a>
     <button class="btn" id="copy">Copy details</button>
   </div>
@@ -192,7 +193,7 @@
 <script>
   // ====== CONFIG ======
   const WHATSAPP_NUMBER = '995591446365';            // e.g. '995555123456' (no + or spaces). Empty = opens WhatsApp share picker
-  const FORM_ENDPOINT   = '';            // e.g. 'https://formspree.io/f/abcdwxyz' — answers get emailed to you automatically
+  const EMAIL_TO        = 'betterstepio@gmail.com';   // answers are emailed here automatically on Confirm (via formsubmit.co)
   // ====================
   const $ = (id) => document.getElementById(id);
   const yes = $('yes'), no = $('no'), hint = $('hint');
@@ -299,10 +300,14 @@
     $('summary').innerHTML = rows.map(([k, v]) => `<div class="row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
     const text = `Mia said YES 🤍\n\n` + rows.map(([k, v]) => `${k}: ${v}`).join('\n') + `\n\n— Nikusha & Mia`;
     $('wa').href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
-    if (FORM_ENDPOINT) {
-      const payload = Object.fromEntries(rows); payload._subject = 'Mia said yes 🤍';
-      fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {});
-    }
+    const payload = Object.fromEntries(rows);
+    payload._subject = 'Mia said YES 🤍'; payload._template = 'table'; payload._captcha = 'false';
+    $('status').textContent = 'Sending to Nikusha…';
+    fetch('https://formsubmit.co/ajax/' + EMAIL_TO, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload)
+    }).then(r => r.ok ? r.json() : Promise.reject())
+      .then(() => { $('status').textContent = 'Sent to Nikusha ✓'; })
+      .catch(() => { $('status').textContent = 'Couldn’t send automatically — use the button below.'; });
     $('copy').onclick = () => {
       navigator.clipboard.writeText(text).then(() => { $('copy').textContent = 'Copied'; setTimeout(() => $('copy').textContent = 'Copy details', 1800); });
     };
