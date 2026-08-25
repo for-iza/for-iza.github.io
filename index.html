@@ -183,16 +183,10 @@
   <div class="summary" id="summary"></div>
   <div class="names">Nikusha <span>&amp;</span> Mia</div>
   <p class="note" id="status" style="margin-top:22px"></p>
-  <div class="send" style="margin-top:14px">
-    <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener" style="text-decoration:none">Send to Nikusha</a>
-    <button class="btn" id="copy">Copy details</button>
-  </div>
-  <p class="note">Or just screenshot this and send it to me.</p>
 </div>
 
 <script>
   // ====== CONFIG ======
-  const WHATSAPP_NUMBER = '995591446365';            // e.g. '995555123456' (no + or spaces). Empty = opens WhatsApp share picker
   const EMAIL_TO        = 'omanidze.nika@gmail.com';   // answers are emailed here automatically on Confirm (via formsubmit.co)
   // ====================
   const $ = (id) => document.getElementById(id);
@@ -299,19 +293,14 @@
   function finish() {
     const rows = steps.map(s => [s.key, finalValue(s)]);
     $('summary').innerHTML = rows.map(([k, v]) => `<div class="row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
-    const text = `Mia said YES 🤍\n\n` + rows.map(([k, v]) => `${k}: ${v}`).join('\n') + `\n\n— Nikusha & Mia`;
-    $('wa').href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
     const payload = Object.fromEntries(rows);
     payload._subject = 'Mia said YES 🤍'; payload._template = 'table'; payload._captcha = 'false';
-    $('status').textContent = 'Sending to Nikusha…';
+    $('status').textContent = 'Letting Nikusha know…';
     fetch('https://formsubmit.co/ajax/' + EMAIL_TO, {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload)
     }).then(r => r.ok ? r.json() : Promise.reject())
-      .then(() => { $('status').textContent = 'Sent to Nikusha ✓'; })
-      .catch(() => { $('status').textContent = 'Couldn’t send automatically — use the button below.'; });
-    $('copy').onclick = () => {
-      navigator.clipboard.writeText(text).then(() => { $('copy').textContent = 'Copied'; setTimeout(() => $('copy').textContent = 'Copy details', 1800); });
-    };
+      .then(() => { $('status').textContent = 'Nikusha has been told. See you soon.'; })
+      .catch(() => { $('status').textContent = 'Couldn’t send this — please screenshot it and send it to me.'; });
     show('done');
     burst(); setInterval(burst, 2600);
   }
