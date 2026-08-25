@@ -252,8 +252,9 @@
       opts: [['Dinner','a table for two'],['Coffee & a walk','unhurried'],['Cinema','and something after'],['Surprise me','I trust you']] },
     { key: 'Food', q: 'What shall we <em>eat?</em>', sub: 'Dessert is non-negotiable.',
       opts: [['Georgian','the classics'],['Italian','pasta, obviously'],['Sushi','something light'],['You choose','I’m easy']] },
-    { key: 'Bring', q: 'What should I <em>bring?</em>', sub: 'Besides myself.',
-      opts: [['Flowers','naturally'],['Chocolate','the good kind'],['Both','why not'],['Just you','that’s enough']] },
+    { key: 'Flowers', q: 'Which flowers do you <em>love?</em>', sub: 'I’ll bring them. Obviously.',
+      opts: [['Roses','timeless'],['Peonies','soft and full'],['Tulips','simple, lovely'],['Something else','tell me which']],
+      customOn: 'Something else', placeholder: 'Your favourite flower' },
   ];
   let step = 0;
   const answers = {};
