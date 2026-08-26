@@ -140,8 +140,8 @@
 <!-- 1. THE QUESTION -->
 <div class="card" id="ask">
   <div class="eyebrow">A question, sincerely asked</div>
-  <img class="photo" id="photo" src="photo.jpg" alt="Us">
-  <div class="ornament" id="ornament">❦</div>
+  <img class="photo" id="photo" src="photo.jpg" alt="Iza" style="display:block">
+  <div class="ornament" id="ornament" style="display:none">❦</div>
   <h1>Iza, <em>will you go</em><br>on a date with me?</h1>
   <p class="sub">Just the two of us. An evening well spent.</p>
   <div class="buttons">
@@ -192,7 +192,9 @@
   const $ = (id) => document.getElementById(id);
   const yes = $('yes'), no = $('no'), hint = $('hint');
 
-  $('photo').onload = () => { $('photo').style.display = 'block'; $('ornament').style.display = 'none'; };
+  // photo.jpg is shown by default; if it fails to load, fall back to the ornament
+  $('photo').onerror = () => { $('photo').style.display = 'none'; $('ornament').style.display = 'block'; };
+  if ($('photo').complete && $('photo').naturalWidth === 0) $('photo').onerror();
 
   /* ---------- runaway "No" ---------- */
   const noTexts = ['No','Are you sure?','Quite sure?','Think it over','One more chance','Last chance, truly','This button is tired','Just say yes'];
