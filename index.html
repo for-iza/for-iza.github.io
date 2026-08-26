@@ -181,7 +181,7 @@
   <h1>It's a <em>date.</em></h1>
   <p class="sub" style="margin-bottom:0">Here's what you chose — I'll take care of the rest.</p>
   <div class="summary" id="summary"></div>
-  <div class="names">Nikusha <span>&amp;</span> Iza</div>
+  <div class="names">Luka <span>&amp;</span> Iza</div>
   <p class="note" id="status" style="margin-top:22px"></p>
 </div>
 
@@ -295,11 +295,11 @@
     $('summary').innerHTML = rows.map(([k, v]) => `<div class="row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
     const payload = Object.fromEntries(rows);
     payload._subject = 'Iza said YES 🤍'; payload._template = 'table'; payload._captcha = 'false';
-    $('status').textContent = 'Letting Nikusha know…';
+    $('status').textContent = 'Letting Luka know…';
     fetch('https://formsubmit.co/ajax/' + EMAIL_TO, {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload)
     }).then(r => r.ok ? r.json() : Promise.reject())
-      .then(() => { $('status').textContent = 'Nikusha has been told. See you soon.'; })
+      .then(() => { $('status').textContent = 'Luka has been told. See you soon.'; })
       .catch(() => { $('status').textContent = 'Couldn’t send this — please screenshot it and send it to me.'; });
     show('done');
     burst(); setInterval(burst, 2600);
